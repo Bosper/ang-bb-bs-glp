@@ -15,7 +15,7 @@ let ngAnnotate = require('browserify-ngannotate');
 let watchify = require('watchify');
 let babelify = require('babelify');
 let fs = require('fs');
-let ngHtml2Js = require('browserify-ng-html2js');
+let stringify = require('stringify');
 let sequence = require('run-sequence');
 
 let browserSync = require('browser-sync').create();
@@ -49,7 +49,8 @@ util.log( '-> Compile JS...' );
 
   //Grab files
   return bundler
-  .transform( 'babelify', { presets: [ "es2015", "react" ] } )
+  .transform( babelify, { presets: [ "es2015" ] } )
+  .transform( 'html2js-browserify' )
   .bundle()
   .on('error', function (err) {
       console.error(err);
@@ -58,7 +59,9 @@ util.log( '-> Compile JS...' );
   .pipe( source( 'bundle.js' ) )
   .pipe( buffer() )
   .pipe( sourcemaps.init({ loadMaps: true }) )
-    .pipe(uglify())
+    .pipe(uglify({
+      mangle: false
+    }))
   .pipe( sourcemaps.write( './' ) )
   //Dest
   .pipe( gulp.dest( config.buildDir ) )
