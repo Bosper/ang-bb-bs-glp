@@ -1,7 +1,4 @@
-require( 'angular' );
-require( 'angular-ui-router' );
+import angular from 'angular';
+import appModule from './config/config'
 
-var app = angular.module( 'app', [] );
-
-const message = 'Two birds killed by stone!';
-console.log( message );
+angular.bootstrap( document, [ appModule.name ] );

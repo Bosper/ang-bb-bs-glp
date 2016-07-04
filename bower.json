@@ -1,0 +1,32 @@
+{
+  "name": "ang-ui-bs-ba",
+  "description": "Just front end components -no JS",
+  "main": "app.js",
+  "authors": [
+    "Grzegorz Lechowski <Grzegorz.Lechowski@alior.pl>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "angular",
+    "+",
+    "browserify",
+    "+",
+    "sourceMaps",
+    "+",
+    "babel",
+    "+",
+    "es2015"
+  ],
+  "homepage": "https://github.com/Bosper/ang-bb-bs-glp",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "^4.6.3"
+  }
+}
