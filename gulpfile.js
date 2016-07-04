@@ -113,7 +113,7 @@ gulp.task( 'clean', function () {
 gulp.task( 'watch', [ 'sass', 'browser-sync', 'connect' ], function () {
   gulp.watch( [ './src/scss/*.scss', './src/scss/**/*.scss' ], [ 'sass' ] )
   gulp.watch( [ './app/*.js', './app/**/*.js' ], [ 'browserify' ] )
-  gulp.watch( [ './public/*.html' ], [ 'bs-reload' ] );
+  gulp.watch( [ './public/*.html', './app/views/*.html' ], [ 'bs-reload' ] );
 } );
 
 /** Build TASK **/
