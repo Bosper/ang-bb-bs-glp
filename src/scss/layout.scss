@@ -2,3 +2,33 @@ h1 {
   color: $violet;
   @include font-size( 20 );
 }
+
+.form {
+    display: inline-flex;
+
+    &-create {
+
+        //margin: 0 auto;
+        min-width: 700px;
+
+    }
+}
+
+//Rewrite & customize bootstrap
+.row {
+    &-below {
+        padding-top: 50px;
+    }
+}
+
+.btn {
+    &-create {
+        margin-left: 11px;
+    }
+}
+
+.test {
+    display: block;
+    max-width: 813px;
+    margin: 0 auto;
+}

@@ -1,0 +1,30 @@
+<h2>ToDo App!</h2>
+<div class="test">
+    <form class="form">
+            <input class="form-control form-create" name="task" type="text" placeholder="Write sommething!" />
+            <button type="button" name="button" class="btn btn-success btn-create">Create Task</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Completed</th>
+                <th>Task</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="todo in todos">
+                <td>
+                    <input class="todos__checkbox" type="checkbox" ng-checked="{{ todo.isCompleted }}" ng-click="onComplete( todo )" />
+                </td>
+                <td>
+                    <span class="todos__task" ng-class="{ 'todos__task-completed': todo.isCompleted }">{{ todo.task }}</span>
+                </td>
+                <td>
+                    <input class="btn btn-info" type="button" name="name" value="Edit" />
+                    <input class="btn btn-danger" type="button" name="name" value="Delete" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -6,6 +6,8 @@ let stream = require('gulp-streamify');
 let util = require('gulp-util');
 let sass = require('gulp-ruby-sass');
 let sourcemaps = require('gulp-sourcemaps');
+let autoprefixer = require('gulp-autoprefixer');
+let rename = require('gulp-rename');
 let clean = require('gulp-clean');
 let connect = require('gulp-connect');
 let source = require('vinyl-source-stream');
@@ -21,12 +23,16 @@ let sequence = require('run-sequence');
 let browserSync = require('browser-sync').create();
 let reload = browserSync.reload;
 
-const config = {
-  sass_dir: './src/scss',
-  bower_dir: './src/libs',
+let autoprefixerOptions = {
+  browsers: [ 'last 3 versions', '> 5%', 'Firefox ESR' ]
+}
 
-  sourceDir: './app/',
-  buildDir: './public/bin'
+const config = {
+  sass_dir:     './src/scss',
+  bower_dir:    './src/libs',
+
+  sourceDir:    './app',
+  buildDir:     './public/bin'
 }
 
 /** Connect TASK **/
@@ -41,7 +47,7 @@ gulp.task( 'connect', function () {
 gulp.task( 'browserify', function () {
 
   let bundler = browserify({
-    entries: [ config.sourceDir + 'app.js' ],
+    entries: [ config.sourceDir + '/app.js' ],
     debug: true
   });
 
@@ -67,17 +73,28 @@ util.log( '-> Compile JS...' );
   .pipe( gulp.dest( config.buildDir ) )
 } );
 
+/** Rename TASK **/
+gulp.task( 'rename', function () {
+  gulp.src( config.bower_dir + '/bootstrap-css-only/css/bootstrap.css' )
+  .pipe( rename( config.bower_dir + '/bootstrap-css-only/css/bootstrap.scss' ) )
+  .pipe( gulp.dest( './' ) )
+} )
+
 /** Sass TASK **/
 gulp.task('sass', () =>
     sass( config.sass_dir + '/master.scss', {
-      style: 'expanded',
+      style: 'compressed',
       loadPath: [
-        config.bower_dir + '/font-awesome/scss'
+        config.bower_dir + '/font-awesome/scss',
+        config.bower_dir + '/bootstrap-css-only/css'
       ]
     } )
-        .on('error', sass.logError)
-        .pipe(gulp.dest('./public/css'))
-        .pipe(reload({stream:true}))
+    .pipe( sourcemaps.init() )
+    .on('error', sass.logError)
+    .pipe( autoprefixer( autoprefixerOptions ) )
+    .pipe( sourcemaps.write( './' ) )
+    .pipe( gulp.dest('./public/css') )
+    .pipe( reload( {stream:true} ) )
 );
 
 /** Icon TASK **/
@@ -113,15 +130,15 @@ gulp.task( 'clean', function () {
 gulp.task( 'watch', [ 'sass', 'browser-sync', 'connect' ], function () {
   gulp.watch( [ './src/scss/*.scss', './src/scss/**/*.scss' ], [ 'sass' ] )
   gulp.watch( [ './app/*.js', './app/**/*.js' ], [ 'browserify' ] )
-  gulp.watch( [ './public/*.html', './app/views/*.html' ], [ 'bs-reload' ] );
+  gulp.watch( [ './public/*.html', './app/views/*.html' ], [ 'browserify', 'bs-reload' ] );
 } );
 
 /** Build TASK **/
 gulp.task( 'build', function ( callback ) {
-  sequence( 'clean', 'sass', 'icons', 'browserify' )
+  sequence( 'clean', ['rename', 'sass'], 'icons', 'browserify' )
 } );
 
 /** Default TASK **/
 gulp.task( 'default', function ( callback ) {
-  sequence( [ 'build', 'watch' ] )
+  sequence( ['build', 'watch'] )
 } );

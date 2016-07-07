@@ -1,0 +1,25 @@
+.todos{
+
+    &__checkbox {
+
+    }
+
+    &__task {
+
+        &-completed {
+            text-decoration: line-through;
+        }
+
+    }
+}
+
+tr {
+    display: table-row;
+}
+
+td, th {
+    @include font-size(26);
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle !important;
+}
