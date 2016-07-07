@@ -1,11 +1,13 @@
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import moduleDropdown from './modules/dropdown.module';
-import modalModule from './modules/modal.module';
+import moduleModal from './modules/modal.module';
+import moduleButton from './modules/button.module';
 import homeController from './controller/HomeController'
 
 
-const app = angular.module( 'app', [ uiRouter, 'dropdown.module', 'modal.module', 'modal.instance.module' ] );
+
+const app = angular.module( 'app', [ uiRouter, 'dropdown.module', 'modal.module', 'modal.instance.module', 'button.module' ] );
 
 app.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
     $urlRouterProvider.otherwise('/');
