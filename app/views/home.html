@@ -1,8 +1,8 @@
 <h2>ToDo App!</h2>
 <div class="test">
-    <form class="form">
-            <input class="form-control form-create" name="task" type="text" placeholder="Write sommething!" />
-            <button type="button" name="button" class="btn btn-success btn-create">Create Task</button>
+    <form class="form" ng-submit="createTask()">
+            <input class="form-control form-create" ng-model="createTaskInput" name="task" type="text" placeholder="Write sommething!" />
+            <button type="submit" name="button" class="btn btn-success btn-create">Create Task</button>
     </form>
     <table class="table table-striped">
         <thead>
@@ -18,11 +18,22 @@
                     <input class="todos__checkbox" type="checkbox" ng-checked="{{ todo.isCompleted }}" ng-click="onComplete( todo )" />
                 </td>
                 <td>
-                    <span class="todos__task" ng-class="{ 'todos__task-completed': todo.isCompleted }">{{ todo.task }}</span>
+                    <span
+                        class="todos__task"
+                        ng-if="!todo.isEditing"
+                        ng-class="{ 'todos__task-completed': todo.isCompleted }">
+                        {{ todo.task }}
+                    </span>
+                    <form ng-submit="onSave(todo)">
+                        <input class="form-control" type="text" ng-value="todo.task" ng-model="todo.updatedTask" ng-if="todo.isEditing">
+                    </form>
                 </td>
                 <td>
-                    <input class="btn btn-info" type="button" name="name" value="Edit" />
-                    <input class="btn btn-danger" type="button" name="name" value="Delete" />
+                    <input ng-if="!todo.isEditing" class="btn btn-info" type="button" name="name" value="Edit" ng-click="onEditClick( todo )" />
+                    <input ng-if="!todo.isEditing"  class="btn btn-danger" type="button" name="name" value="Delete" />
+
+                    <input ng-if="todo.isEditing"  class="btn btn-primary" type="button" name="name" value="Save" ng-click="onSave( todo )" />
+                    <input ng-if="todo.isEditing " class="btn btn-default" type="button" name="name" value="Cancel" ng-click="onCancel( todo )" />
                 </td>
             </tr>
         </tbody>
